@@ -4,8 +4,9 @@ namespace ApigilityAd\V1\Rest\Banner;
 use ApigilityAd\DoctrineEntity\Position;
 use ApigilityAd\V1\Rest\Position\PositionEntity;
 use ApigilityCatworkFoundation\Base\ApigilityEntity;
+use ApigilityCatworkFoundation\Base\ApigilityObjectStorageAwareEntity;
 
-class BannerEntity extends ApigilityEntity
+class BannerEntity extends ApigilityObjectStorageAwareEntity
 {
     /**
      * @Id @Column(type="integer")
@@ -72,7 +73,7 @@ class BannerEntity extends ApigilityEntity
 
     public function getImage()
     {
-        return $this->image;
+        return $this->renderUriToUrl($this->image);
     }
 
     public function setLink($link)

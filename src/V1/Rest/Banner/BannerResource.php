@@ -22,7 +22,7 @@ class BannerResource extends ApigilityResource
     public function fetch($id)
     {
         try {
-            return new BannerEntity($this->bannerService->getBanner($id));
+            return new BannerEntity($this->bannerService->getBanner($id), $this->serviceManager);
         } catch (\Exception $exception) {
             return new ApiProblem($exception->getCode(), $exception->getMessage());
         }
@@ -31,7 +31,7 @@ class BannerResource extends ApigilityResource
     public function fetchAll($params = [])
     {
         try {
-            return new BannerCollection($this->bannerService->getBanners($params));
+            return new BannerCollection($this->bannerService->getBanners($params), $this->serviceManager);
         } catch (\Exception $exception) {
             return new ApiProblem($exception->getCode(), $exception->getMessage());
         }
