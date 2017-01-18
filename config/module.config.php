@@ -45,6 +45,7 @@ return [
             ],
             'collection_http_methods' => [
                 0 => 'GET',
+                1 => 'POST',
             ],
             'collection_query_whitelist' => [
                 0 => 'position_id',

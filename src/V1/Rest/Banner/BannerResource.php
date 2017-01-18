@@ -19,6 +19,15 @@ class BannerResource extends ApigilityResource
         $this->bannerService = $this->serviceManager->get('ApigilityAd\Service\BannerService');
     }
 
+    public function create($data)
+    {
+        try {
+            return new BannerEntity($this->bannerService->createBanner($data), $this->serviceManager);
+        } catch (\Exception $exception) {
+            return new ApiProblem($exception->getCode(), $exception->getMessage());
+        }
+    }
+
     public function fetch($id)
     {
         try {
