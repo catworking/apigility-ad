@@ -25,10 +25,16 @@ class BannerService
      */
     protected $em;
 
+    /**
+     * @var \ApigilityAd\Service\PositionService
+     */
+    protected $positionService;
+
     public function __construct(ServiceManager $services)
     {
         $this->classMethodsHydrator = new ClassMethodsHydrator();
         $this->em = $services->get('Doctrine\ORM\EntityManager');
+        $this->positionService = $services->get('ApigilityAd\Service\PositionService');
     }
 
     /**
@@ -44,6 +50,17 @@ class BannerService
         $banner->setImage($data->image);
         if (isset($data->title)) $banner->setTitle($data->title);
         if (isset($data->link)) $banner->setLink($data->link);
+
+        if (isset($data->positions)) {
+            if (is_array($data->positions)) {
+                foreach ($data->positions as $position_data) {
+                    $position = $this->positionService->getPosition($position_data['id']);
+                    if ($position instanceof DoctrineEntity\Position) {
+                        $banner->addPosition($position);
+                    }
+                }
+            }
+        }
 
         if (!empty($positions)) {
             foreach ($positions as $position) {
