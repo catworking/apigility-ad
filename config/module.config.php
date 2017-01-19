@@ -42,6 +42,8 @@ return [
             'collection_name' => 'banner',
             'entity_http_methods' => [
                 0 => 'GET',
+                1 => 'PATCH',
+                2 => 'DELETE',
             ],
             'collection_http_methods' => [
                 0 => 'GET',

@@ -80,7 +80,7 @@ class BannerService
      * 获取一个横幅广告
      *
      * @param $banner_id
-     * @return \ApigilityAd\DoctrineEntity\Position
+     * @return \ApigilityAd\DoctrineEntity\Banner
      * @throws \Exception
      * @internal param $position_id
      */
@@ -116,5 +116,65 @@ class BannerService
 
         $doctrine_paginator = new DoctrineToolPaginator($qb->getQuery());
         return new DoctrinePaginatorAdapter($doctrine_paginator);
+    }
+
+    /**
+     * 更新一个Banner广告
+     *
+     * @param $banner_id
+     * @param \stdClass $data
+     * @param array $positions
+     * @return DoctrineEntity\Banner
+     */
+    public function updateBanner($banner_id, \stdClass $data, $positions = [])
+    {
+        $banner = $this->getBanner($banner_id);
+
+        if (isset($data->image))$banner->setImage($data->image);
+        if (isset($data->title)) $banner->setTitle($data->title);
+        if (isset($data->link)) $banner->setLink($data->link);
+
+        if (isset($data->positions)) {
+            $banner->getPositions()->clear();
+
+            if (is_array($data->positions)) {
+                foreach ($data->positions as $position_data) {
+                    $position = $this->positionService->getPosition($position_data['id']);
+                    if ($position instanceof DoctrineEntity\Position) {
+                        $banner->addPosition($position);
+                    }
+                }
+            }
+        }
+
+        if (!empty($positions)) {
+            foreach ($positions as $position) {
+                if ($position instanceof DoctrineEntity\Position) {
+                    $banner->addPosition($position);
+                }
+            }
+        }
+
+        $this->em->flush();
+
+        return $banner;
+    }
+
+    /**
+     * 删除一个Banner广告
+     *
+     * @param $banner_id
+     * @return bool
+     */
+    public function deleteBanner($banner_id)
+    {
+        $banner = $this->getBanner($banner_id);
+
+        if ($banner instanceof DoctrineEntity\Banner) {
+            $this->em->remove($banner);
+            $this->em->flush();
+        }
+
+        return true;
     }
 }

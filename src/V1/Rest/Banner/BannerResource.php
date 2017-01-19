@@ -45,4 +45,22 @@ class BannerResource extends ApigilityResource
             return new ApiProblem($exception->getCode(), $exception->getMessage());
         }
     }
+
+    public function patch($id, $data)
+    {
+        try {
+            return new BannerEntity($this->bannerService->updateBanner($id, $data), $this->serviceManager);
+        } catch (\Exception $exception) {
+            return new ApiProblem($exception->getCode(), $exception->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            return $this->bannerService->deleteBanner($id);
+        } catch (\Exception $exception) {
+            return new ApiProblem($exception->getCode(), $exception->getMessage());
+        }
+    }
 }
