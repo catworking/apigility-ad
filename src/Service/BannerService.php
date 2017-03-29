@@ -15,6 +15,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator as DoctrineToolPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter;
 use Zend\Math\Rand;
 use ApigilityAd\DoctrineEntity;
+use Doctrine\ORM\Query\Expr;
 
 class BannerService
 {
@@ -100,7 +101,7 @@ class BannerService
     public function getBanners($params)
     {
         $qb = new QueryBuilder($this->em);
-        $qb->select('b')->from('ApigilityAd\DoctrineEntity\Banner', 'b');
+        $qb->select('b')->from('ApigilityAd\DoctrineEntity\Banner', 'b')->orderBy(new Expr\OrderBy('b.id', 'DESC'));
 
         $where = null;
         if (isset($params->position_id)) {
